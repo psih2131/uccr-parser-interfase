@@ -1,0 +1,197 @@
+$auth-bg: #0f1115;
+$auth-card: #171a21;
+$auth-border: rgba(255, 255, 255, 0.08);
+$auth-text: #e8eaed;
+$auth-muted: #8b93a7;
+$auth-accent: #e8eaed;
+$auth-accent-hover: #ffffff;
+$auth-accent-text: #0f1115;
+$auth-input: #0c0e12;
+$auth-focus: rgba(232, 234, 237, 0.2);
+
+.auth-layout {
+  min-height: 100vh;
+  background: $auth-bg;
+  color: $auth-text;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -15%, rgba(255, 255, 255, 0.06), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 100% 100%, rgba(255, 255, 255, 0.03), transparent 50%),
+    $auth-bg;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px 32px;
+  background: $auth-card;
+  border: 1px solid $auth-border;
+  border-radius: 20px;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  &__brand {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  &__logo {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: $auth-text;
+  }
+
+  &__subtitle {
+    margin-top: 6px;
+    font-size: 13px;
+    color: $auth-muted;
+    letter-spacing: 0.04em;
+  }
+}
+
+.auth-tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 28px;
+  background: $auth-input;
+  border-radius: 12px;
+  border: 1px solid $auth-border;
+
+  &__btn {
+    position: relative;
+    z-index: 1;
+    height: 40px;
+    border: 0;
+    background: transparent;
+    color: $auth-muted;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: color 0.2s ease;
+
+    &--active {
+      color: $auth-text;
+    }
+  }
+
+  &__indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: transform 0.25s ease;
+
+    &--register {
+      transform: translateX(100%);
+    }
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__error {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(232, 71, 47, 0.12);
+    border: 1px solid rgba(232, 71, 47, 0.35);
+    color: #ffb4a8;
+    font-size: 13px;
+  }
+
+  &__success {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(0, 213, 226, 0.1);
+    border: 1px solid rgba(0, 213, 226, 0.3);
+    color: #8eecf3;
+    font-size: 13px;
+  }
+
+  &__submit {
+    margin-top: 8px;
+    height: 48px;
+    border: 0;
+    border-radius: 12px;
+    background: $auth-accent;
+    color: $auth-accent-text;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: $auth-accent-hover;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: $auth-muted;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__input {
+    height: 48px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid $auth-border;
+    background: $auth-input;
+    color: $auth-text;
+    font-size: 15px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: rgba(139, 147, 167, 0.7);
+    }
+
+    &:focus {
+      border-color: rgba(232, 234, 237, 0.35);
+      box-shadow: 0 0 0 3px $auth-focus;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .auth-card {
+    padding: 28px 20px 24px;
+    border-radius: 16px;
+  }
+}

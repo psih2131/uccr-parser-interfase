@@ -1,0 +1,147 @@
+html {
+	scroll-behavior: smooth;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+}
+
+@media only screen and (max-width: 940px) {
+
+	input,
+	textarea,
+	select {
+		font-size: 16px !important;
+	}
+}
+
+a {
+	text-decoration: none;
+	font-family: $mainFont;
+
+}
+
+li {
+	list-style-type: none;
+}
+
+button {
+	cursor: pointer;
+	outline: 0 none !important;
+	font-family: $mainFont;
+
+}
+
+body::-webkit-scrollbar {
+	width: 5px;
+}
+
+
+body::-webkit-scrollbar-thumb {
+	background-color: darkgrey;
+	border-radius: 100px;
+
+}
+
+input {
+	outline: 0 none !important;
+	font-family: $mainFont;
+
+}
+
+input[type=text] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+input[type=tel] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+input[type=email] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+input[type=submit] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+textarea {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font-family: $mainFont;
+}
+
+select {
+	cursor: pointer;
+	outline: 0 none !important;
+	font-family: $mainFont;
+}
+
+textarea {
+	outline: 0 none !important;
+
+}
+
+svg {
+	shape-rendering: geometricPrecision;
+}
+
+body {
+	font-family: $mainFont, Inter, system-ui, sans-serif;
+	background: $pageBg;
+	color: $gray;
+}
+
+main {
+	padding-top: 0;
+}
+
+ul {
+	margin-bottom: 0;
+}
+
+.app {
+	position: relative;
+}
+
+.container {
+	width: 1440px;
+	margin: 0 auto;
+}
+
+@media only screen and (max-width: 1460px) {
+	.container {
+		width: 1200px;
+	}
+}
+
+@media only screen and (max-width: 1240px) {
+	.container {
+		width: 940px;
+	}
+}
+
+@media only screen and (max-width: 940px) {
+	.container {
+		width: 750px;
+	}
+}
+
+@media only screen and (max-width: 760px) {
+	.container {
+		width: 350px;
+	}
+}
