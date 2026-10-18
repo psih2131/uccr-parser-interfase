@@ -1,0 +1,218 @@
+$panel-row-border: rgba(255, 255, 255, 0.06);
+$panel-row-text: #e8eaed;
+$panel-row-muted: #8b93a7;
+$panel-row-hover: rgba(255, 255, 255, 0.03);
+$panel-row-yes: #3dcf8e;
+$panel-row-no: #8b93a7;
+$panel-row-edit: #8b93a7;
+$panel-row-edit-hover: #e8eaed;
+$panel-row-delete: #8b93a7;
+$panel-row-delete-hover: #f07178;
+$panel-row-tip-bg: #1e2430;
+$panel-row-tip-border: rgba(255, 255, 255, 0.12);
+
+.panel-post-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 0.9fr) 120px 120px 90px 56px 100px;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid $panel-row-border;
+  transition: background 0.15s ease;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    background: $panel-row-hover;
+  }
+
+  &__id {
+    font-size: 13px;
+    font-weight: 600;
+    color: $panel-row-muted;
+  }
+
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    color: $panel-row-text;
+  }
+
+  &__url {
+    font-size: 13px;
+    color: $panel-row-muted;
+    word-break: break-all;
+  }
+
+  &__date {
+    font-size: 13px;
+    color: $panel-row-muted;
+  }
+
+  &__status {
+    font-size: 13px;
+    font-weight: 700;
+
+    &--ok {
+      color: $panel-row-yes;
+    }
+
+    &--fail {
+      color: $panel-row-delete-hover;
+    }
+  }
+
+  &__log {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__log-empty {
+    color: $panel-row-muted;
+    font-size: 13px;
+  }
+
+  &__log-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    color: $panel-row-muted;
+    cursor: default;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: $panel-row-text;
+      background: rgba(255, 255, 255, 0.06);
+      outline: none;
+
+      .panel-post-row__log-tip {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -8px);
+      }
+    }
+  }
+
+  &__log-tip {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    z-index: 5;
+    width: max-content;
+    max-width: 320px;
+    padding: 10px 12px;
+    border: 1px solid $panel-row-tip-border;
+    border-radius: 8px;
+    background: $panel-row-tip-bg;
+    color: $panel-row-text;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 0);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+    pointer-events: none;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: $panel-row-edit;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &--edit:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: $panel-row-edit-hover;
+    }
+
+    &--delete {
+      color: $panel-row-delete;
+
+      &:hover {
+        background: rgba(240, 113, 120, 0.12);
+        color: $panel-row-delete-hover;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .panel-post-row {
+    grid-template-columns: 48px 1fr auto;
+    grid-template-areas:
+      "id title actions"
+      "id url log"
+      "id created enriched"
+      "id updated enriched";
+    gap: 8px 12px;
+    padding: 16px;
+
+    &__id {
+      grid-area: id;
+    }
+
+    &__title {
+      grid-area: title;
+      white-space: normal;
+    }
+
+    &__url {
+      grid-area: url;
+    }
+
+    &__date:nth-of-type(1),
+    &__date:first-of-type {
+      grid-area: created;
+    }
+
+    &__status {
+      grid-area: enriched;
+      justify-self: end;
+    }
+
+    &__log {
+      grid-area: log;
+      justify-content: flex-end;
+    }
+
+    &__actions {
+      grid-area: actions;
+    }
+  }
+}

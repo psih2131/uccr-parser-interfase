@@ -3,7 +3,7 @@
     <label class="auth-field">
       <span class="auth-field__label">Логин</span>
       <input
-        v-model.trim="login"
+        v-model.trim="loginValue"
         class="auth-field__input"
         type="text"
         name="login"
@@ -35,11 +35,12 @@
 </template>
 
 <script setup>
+import authService from '~/services/auth'
+
 const emit = defineEmits(['success'])
 
-const config = useRuntimeConfig()
 const authStore = useAuthStore()
-const login = ref('')
+const loginValue = ref('')
 const password = ref('')
 const error = ref('')
 const pending = ref(false)
@@ -49,14 +50,7 @@ const onSubmit = async () => {
   pending.value = true
 
   try {
-    const res = await $fetch(`${config.public.apiUrl}/api/v1/admin/login`, {
-      method: 'POST',
-      body: {
-        login: login.value,
-        password: password.value,
-      },
-      credentials: 'include',
-    })
+    const res = await authService.login(loginValue.value, password.value)
     authStore.setAdmin(res?.data?.admin ?? null)
     emit('success')
   } catch (e) {

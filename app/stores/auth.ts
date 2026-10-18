@@ -1,11 +1,5 @@
 import { defineStore } from 'pinia'
-
-type Admin = {
-  id: number
-  name?: string | null
-  login?: string
-  email?: string | null
-}
+import type { Admin } from '~/services/auth'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -18,22 +12,6 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
-    async fetchMe() {
-      const config = useRuntimeConfig()
-
-      try {
-        const res = await $fetch<{ success: boolean; data?: { admin?: Admin } }>(
-          `${config.public.apiUrl}/api/v1/admin/me`,
-          { credentials: 'include' },
-        )
-        this.admin = res?.data?.admin ?? null
-      } catch {
-        this.admin = null
-      } finally {
-        this.checked = true
-      }
-    },
-
     setAdmin(admin: Admin | null) {
       this.admin = admin
       this.checked = true

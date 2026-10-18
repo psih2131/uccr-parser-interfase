@@ -49,9 +49,10 @@
 </template>
 
 <script setup>
+import authService from '~/services/auth'
+
 const emit = defineEmits(['success'])
 
-const config = useRuntimeConfig()
 const email = ref('')
 const password = ref('')
 const secretRegisterKey = ref('')
@@ -65,14 +66,7 @@ const onSubmit = async () => {
   pending.value = true
 
   try {
-    await $fetch(`${config.public.apiUrl}/api/v1/admin/register`, {
-      method: 'POST',
-      body: {
-        email: email.value,
-        password: password.value,
-        secretRegisterKey: secretRegisterKey.value,
-      },
-    })
+    await authService.register(email.value, password.value, secretRegisterKey.value)
     success.value = 'Аккаунт создан. Можно войти.'
     emit('success')
   } catch (e) {

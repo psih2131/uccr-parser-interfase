@@ -1,12 +1,18 @@
+import authService from '~/services/auth'
+
 export default defineNuxtRouteMiddleware(async (to) => {
-  // Cookie-сессия живёт в браузере — на SSR к API другого порта cookie не уйдёт
   if (import.meta.server) return
 
   const authStore = useAuthStore()
   const isAuthPage = to.path === '/auth' || to.path.startsWith('/auth/')
 
   if (!authStore.checked) {
-    await authStore.fetchMe()
+    const admin = await authService.checkAuth()
+    if (admin) {
+      authStore.setAdmin(admin)
+    } else {
+      authStore.clear()
+    }
   }
 
   if (!authStore.isAuthenticated && !isAuthPage) {

@@ -4,11 +4,19 @@
 
 @import "./sourse";
 
+/* layouts */
+@import "./layouts/PanelLayout";
+
 /* components */
-// @import "./components/...";
+@import "./components/PanelAside";
+@import "./components/PanelDashboard";
+@import "./components/PanelActions";
+@import "./components/PanelPostsTable";
+@import "./components/PanelPostRow";
 
 /* pages */
 @import "./pages/AuthPage";
+@import "./pages/PostDetail";
 
 /* adaptive */
 // @import "./adaptive/...";
