@@ -7,7 +7,11 @@ export default defineNuxtConfig({
   ssr: true,
   runtimeConfig: {
     public: {
-      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3001',
+      apiUrl: process.env.NUXT_PUBLIC_API_URL ,
     },
+  },
+  nitro: {
+    host: '0.0.0.0',
+    port: process.env.NUXT_PORT,
   },
 })
