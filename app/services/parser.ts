@@ -6,6 +6,7 @@ type RabSpecListResponse = {
       url: string
       title: string | null
       parser_load: boolean
+      ai_load: boolean | null
       parser_logs: string | null
       created_at: string
       updated_at: string
@@ -42,7 +43,9 @@ class ParserService {
           url: string
           title: string | null
           parser_load: boolean
+          ai_load: boolean | null
           post_data: Record<string, unknown> | null
+          ai_data: Record<string, unknown> | null
           parser_logs: string | null
           created_at: string
           updated_at: string

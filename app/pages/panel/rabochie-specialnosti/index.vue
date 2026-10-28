@@ -13,9 +13,11 @@
       :enriching="enriching"
       :deleting="deleting"
       :parse-status="parseStatus"
+      :enrich-status="enrichStatus"
       @parse="onParse"
       @enrich="onEnrich"
       @delete-all="onDeleteAll"
+      @download="onDownload"
     />
 
     <PanelPostsTable
@@ -28,6 +30,8 @@
 
 <script setup>
 import parserService from '~/services/parser'
+import aiService from '~/services/ai'
+import rabSpecService from '~/services/rabSpec'
 
 definePageMeta({
   layout: 'panel',
@@ -62,6 +66,7 @@ const posts = computed(() => {
     log: item.parser_logs,
     url: item.url,
     parserLoad: item.parser_load,
+    aiLoad: item.ai_load,
   }))
 })
 
@@ -79,16 +84,24 @@ const stats = computed(() => {
 })
 
 const parseStatus = ref(null)
-const enriching = ref(false)
+const enrichStatus = ref(null)
 const deleting = ref(false)
 const parsing = computed(() => parseStatus.value === 'loading')
+const enriching = computed(() => enrichStatus.value === 'loading')
 
 let statusTimer = null
+let enrichTimer = null
 
 const stopStatusPolling = () => {
   if (!statusTimer) return
   clearInterval(statusTimer)
   statusTimer = null
+}
+
+const stopEnrichPolling = () => {
+  if (!enrichTimer) return
+  clearInterval(enrichTimer)
+  enrichTimer = null
 }
 
 const checkParseStatus = async () => {
@@ -108,9 +121,31 @@ const checkParseStatus = async () => {
   }
 }
 
+const checkEnrichStatus = async () => {
+  try {
+    const res = await aiService.getEnrichStatus()
+    const status = res?.data?.['rab-spec']?.statusLoad ?? null
+    enrichStatus.value = status
+
+    if (status !== 'loading') {
+      stopEnrichPolling()
+      if (status === 'everything is loaded') {
+        await refreshPosts()
+      }
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const startStatusPolling = () => {
   stopStatusPolling()
   statusTimer = setInterval(checkParseStatus, 5000)
+}
+
+const startEnrichPolling = () => {
+  stopEnrichPolling()
+  enrichTimer = setInterval(checkEnrichStatus, 5000)
 }
 
 const onEdit = (post) => {
@@ -127,12 +162,29 @@ const onDeleteAll = async () => {
 
   deleting.value = true
   try {
-    await parserService.deleteRabSpecAll()
+    await rabSpecService.deleteAll()
     await refreshPosts()
   } catch (error) {
     console.error(error)
   } finally {
     deleting.value = false
+  }
+}
+
+const onDownload = async () => {
+  try {
+    const res = await rabSpecService.getExport()
+    const posts = res?.data?.posts ?? []
+    const text = JSON.stringify(posts, null, 2)
+    const blob = new Blob([text], { type: 'application/json;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'rabochie-specialnosti.json'
+    link.click()
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -151,12 +203,21 @@ const onParse = async () => {
   }
 }
 
-const onEnrich = () => {
-  enriching.value = true
-  console.log('enrich')
-  setTimeout(() => {
-    enriching.value = false
-  }, 1000)
+const onEnrich = async () => {
+  if (enriching.value || parsing.value) return
+
+  try {
+    const res = await aiService.enrichRabSpecAll()
+    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
+
+    if (enrichStatus.value === 'loading') {
+      startEnrichPolling()
+    }
+  } catch (error) {
+    console.error(error)
+    enrichStatus.value = 'error loading'
+    stopEnrichPolling()
+  }
 }
 
 onMounted(async () => {
@@ -164,9 +225,15 @@ onMounted(async () => {
   if (parseStatus.value === 'loading') {
     startStatusPolling()
   }
+
+  await checkEnrichStatus()
+  if (enrichStatus.value === 'loading') {
+    startEnrichPolling()
+  }
 })
 
 onUnmounted(() => {
   stopStatusPolling()
+  stopEnrichPolling()
 })
 </script>

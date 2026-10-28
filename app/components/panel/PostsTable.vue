@@ -21,7 +21,8 @@
       <span class="panel-posts-table__col panel-posts-table__col--url">URL</span>
       <span class="panel-posts-table__col panel-posts-table__col--date">Создан</span>
       <span class="panel-posts-table__col panel-posts-table__col--date">Обновлён</span>
-      <span class="panel-posts-table__col panel-posts-table__col--status">Статус</span>
+      <span class="panel-posts-table__col panel-posts-table__col--status">Парсинг</span>
+      <span class="panel-posts-table__col panel-posts-table__col--status">Нейросеть</span>
       <span class="panel-posts-table__col panel-posts-table__col--log">Лог</span>
       <span class="panel-posts-table__col panel-posts-table__col--actions">Действия</span>
     </div>

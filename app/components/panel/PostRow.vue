@@ -10,10 +10,20 @@
     <span class="panel-post-row__date">{{ post.createdAt }}</span>
     <span class="panel-post-row__date">{{ post.updatedAt }}</span>
     <span
-      class="panel-post-row__status"
+      class="panel-post-row__status panel-post-row__status--parse"
       :class="post.parserLoad ? 'panel-post-row__status--ok' : 'panel-post-row__status--fail'"
     >
       {{ post.parserLoad ? 'Успех' : 'Ошибка' }}
+    </span>
+    <span
+      class="panel-post-row__status panel-post-row__status--ai"
+      :class="{
+        'panel-post-row__status--ok': post.aiLoad === true,
+        'panel-post-row__status--fail': post.aiLoad === false,
+        'panel-post-row__status--idle': post.aiLoad == null,
+      }"
+    >
+      {{ aiLoadLabel }}
     </span>
 
     <div class="panel-post-row__log">
@@ -77,5 +87,11 @@ const shortTitle = computed(() => {
   if (!title) return '—'
   if (title.length <= TITLE_MAX_LENGTH) return title
   return `${title.slice(0, TITLE_MAX_LENGTH)}…`
+})
+
+const aiLoadLabel = computed(() => {
+  if (props.post.aiLoad === true) return 'Успех'
+  if (props.post.aiLoad === false) return 'Ошибка'
+  return '—'
 })
 </script>

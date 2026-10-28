@@ -13,7 +13,7 @@ $panel-row-tip-border: rgba(255, 255, 255, 0.12);
 
 .panel-post-row {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 0.9fr) 120px 120px 90px 56px 100px;
+  grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 0.9fr) 120px 120px 90px 90px 56px 100px;
   gap: 12px;
   align-items: center;
   padding: 16px 20px;
@@ -64,6 +64,10 @@ $panel-row-tip-border: rgba(255, 255, 255, 0.12);
 
     &--fail {
       color: $panel-row-delete-hover;
+    }
+
+    &--idle {
+      color: $panel-row-muted;
     }
   }
 
@@ -178,8 +182,8 @@ $panel-row-tip-border: rgba(255, 255, 255, 0.12);
     grid-template-areas:
       "id title actions"
       "id url log"
-      "id created enriched"
-      "id updated enriched";
+      "id created parse"
+      "id updated ai";
     gap: 8px 12px;
     padding: 16px;
 
@@ -201,8 +205,13 @@ $panel-row-tip-border: rgba(255, 255, 255, 0.12);
       grid-area: created;
     }
 
-    &__status {
-      grid-area: enriched;
+    &__status--parse {
+      grid-area: parse;
+      justify-self: end;
+    }
+
+    &__status--ai {
+      grid-area: ai;
       justify-self: end;
     }
 

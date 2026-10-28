@@ -58,7 +58,7 @@ $panel-table-input-bg: rgba(255, 255, 255, 0.04);
 
   &__head {
     display: grid;
-    grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 0.9fr) 120px 120px 90px 56px 100px;
+    grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 0.9fr) 120px 120px 90px 90px 56px 100px;
     gap: 12px;
     padding: 14px 20px;
     background: $panel-table-head-bg;
