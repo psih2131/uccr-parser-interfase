@@ -12,6 +12,14 @@
         >
           {{ parsing ? 'Парсинг…' : 'Запустить парсер' }}
         </button>
+        <button
+          type="button"
+          class="panel-actions__btn panel-actions__btn--secondary"
+          :disabled="parsing"
+          @click="emit('parse-missing')"
+        >
+          {{ parsing ? 'Парсинг…' : 'Спарсить недостающие' }}
+        </button>
         <div class="panel-actions__status" :class="`panel-actions__status--${parseStatusKey}`">
           <span v-if="parseStatusKey === 'loading'" class="panel-actions__spinner" aria-hidden="true" />
           <span v-else class="panel-actions__status-dot" />
@@ -88,7 +96,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['parse', 'enrich', 'delete-all', 'download'])
+const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'delete-all', 'download'])
 
 const statusMap = {
   loading: { key: 'loading', label: 'В работе' },

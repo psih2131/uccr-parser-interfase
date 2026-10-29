@@ -78,6 +78,17 @@ class ParserService {
     })
   }
 
+  /** Допарсить только отсутствующие в базе — POST /start-missing/:name */
+  async startMissingParser(name: string) {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/start-missing/${name}`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+  }
+
   /** Перепарсить один URL — POST /start-one/:name */
   async startOneParser(name: string, url: string) {
     return $fetch<{

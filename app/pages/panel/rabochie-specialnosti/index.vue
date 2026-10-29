@@ -15,6 +15,7 @@
       :parse-status="parseStatus"
       :enrich-status="enrichStatus"
       @parse="onParse"
+      @parse-missing="onParseMissing"
       @enrich="onEnrich"
       @delete-all="onDeleteAll"
       @download="onDownload"
@@ -191,6 +192,21 @@ const onDownload = async () => {
 const onParse = async () => {
   try {
     const res = await parserService.startParser('rab-spec')
+    parseStatus.value = res?.data?.statusLoad ?? 'loading'
+
+    if (parseStatus.value === 'loading') {
+      startStatusPolling()
+    }
+  } catch (error) {
+    console.error(error)
+    parseStatus.value = 'error loading'
+    stopStatusPolling()
+  }
+}
+
+const onParseMissing = async () => {
+  try {
+    const res = await parserService.startMissingParser('rab-spec')
     parseStatus.value = res?.data?.statusLoad ?? 'loading'
 
     if (parseStatus.value === 'loading') {
