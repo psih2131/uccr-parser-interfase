@@ -44,6 +44,8 @@ const pending = ref(false)
 const navItems = [
   { to: '/', label: 'Главная' },
   { to: '/panel/rabochie-specialnosti', label: 'Рабочие специальности' },
+  { to: '/panel/profperepodgotovka', label: 'Профпереподготовка' },
+  { to: '/panel/povyshenie-kvalifikatsii', label: 'Повышение квалификации' },
   { to: '/panel/ohrana-truda', label: 'Охрана труда' },
 ]
 

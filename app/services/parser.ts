@@ -28,6 +28,22 @@ class ParserService {
     return `${this.#apiBase()}/rab-spec/${id}`
   }
 
+  profPereListUrl() {
+    return `${this.#apiBase()}/prof-pere`
+  }
+
+  profPereByIdUrl(id: string | number) {
+    return `${this.#apiBase()}/prof-pere/${id}`
+  }
+
+  povKvalListUrl() {
+    return `${this.#apiBase()}/pov-kval`
+  }
+
+  povKvalByIdUrl(id: string | number) {
+    return `${this.#apiBase()}/pov-kval/${id}`
+  }
+
   async getRabSpecList() {
     return $fetch<RabSpecListResponse>(this.rabSpecListUrl(), {
       credentials: 'include',
@@ -107,6 +123,8 @@ class ParserService {
       success: boolean
       data?: {
         'rab-spec'?: { statusLoad?: string | null }
+        'prof-pere'?: { statusLoad?: string | null }
+        'pov-kval'?: { statusLoad?: string | null }
       }
     }>(`${this.#apiBase()}/status`, {
       credentials: 'include',
