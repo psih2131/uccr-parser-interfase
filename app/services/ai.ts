@@ -4,6 +4,17 @@ class AiService {
     return `${config.public.apiUrl}/api/v1/admin/ai`
   }
 
+  /** Обогатить N постов — POST /rab-spec/enrich-all/:count */
+  async enrichRabSpecCount(count) {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/rab-spec/enrich-all/${count}`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+  }
+
   /** Обогатить все посты — POST /rab-spec/enrich-all */
   async enrichRabSpecAll() {
     return $fetch<{
@@ -15,12 +26,34 @@ class AiService {
     })
   }
 
+  /** Обогатить N постов профпереподготовки — POST /prof-pere/enrich-all/:count */
+  async enrichProfPereCount(count) {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/prof-pere/enrich-all/${count}`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+  }
+
   /** Обогатить все посты профпереподготовки — POST /prof-pere/enrich-all */
   async enrichProfPereAll() {
     return $fetch<{
       success: boolean
       data?: { statusLoad?: string | null }
     }>(`${this.#apiBase()}/prof-pere/enrich-all`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+  }
+
+  /** Обогатить N постов повышения квалификации — POST /pov-kval/enrich-all/:count */
+  async enrichPovKvalCount(count) {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/pov-kval/enrich-all/${count}`, {
       method: 'POST',
       credentials: 'include',
     })

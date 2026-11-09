@@ -14,9 +14,11 @@
       :deleting="deleting"
       :parse-status="parseStatus"
       :enrich-status="enrichStatus"
+      :enrich-limit="20"
       @parse="onParse"
       @parse-missing="onParseMissing"
       @enrich="onEnrich"
+      @enrich-limit="onEnrichLimit"
       @delete-all="onDeleteAll"
       @download="onDownload"
     />
@@ -224,6 +226,23 @@ const onEnrich = async () => {
 
   try {
     const res = await aiService.enrichRabSpecAll()
+    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
+
+    if (enrichStatus.value === 'loading') {
+      startEnrichPolling()
+    }
+  } catch (error) {
+    console.error(error)
+    enrichStatus.value = 'error loading'
+    stopEnrichPolling()
+  }
+}
+
+const onEnrichLimit = async (count) => {
+  if (enriching.value || parsing.value) return
+
+  try {
+    const res = await aiService.enrichRabSpecCount(count)
     enrichStatus.value = res?.data?.statusLoad ?? 'loading'
 
     if (enrichStatus.value === 'loading') {

@@ -40,6 +40,15 @@
         >
           {{ enriching ? 'Обогащение…' : 'Обогатить нейросетью' }}
         </button>
+        <button
+          v-if="enrichLimit"
+          type="button"
+          class="panel-actions__btn panel-actions__btn--enrich"
+          :disabled="enriching"
+          @click="emit('enrich-limit', enrichLimit)"
+        >
+          {{ enriching ? 'Обогащение…' : `Обогатить ${enrichLimit}` }}
+        </button>
         <div class="panel-actions__status" :class="`panel-actions__status--${enrichStatusKey}`">
           <span v-if="enrichStatusKey === 'loading'" class="panel-actions__spinner" aria-hidden="true" />
           <span v-else class="panel-actions__status-dot" />
@@ -82,6 +91,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  enrichLimit: {
+    type: Number,
+    default: 0,
+  },
   deleting: {
     type: Boolean,
     default: false,
@@ -96,7 +109,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'delete-all', 'download'])
+const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'enrich-limit', 'delete-all', 'download'])
 
 const statusMap = {
   loading: { key: 'loading', label: 'В работе' },
