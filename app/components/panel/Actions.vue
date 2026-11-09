@@ -76,6 +76,13 @@
         >
           Скачать таблицу
         </button>
+        <button
+          type="button"
+          class="panel-actions__btn panel-actions__btn--download"
+          @click="emit('download-enriched')"
+        >
+          Скачать обогащённые
+        </button>
       </div>
     </div>
   </section>
@@ -109,7 +116,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'enrich-limit', 'delete-all', 'download'])
+const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'enrich-limit', 'delete-all', 'download', 'download-enriched'])
 
 const statusMap = {
   loading: { key: 'loading', label: 'В работе' },

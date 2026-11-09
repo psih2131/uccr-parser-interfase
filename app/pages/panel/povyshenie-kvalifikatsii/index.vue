@@ -21,6 +21,7 @@
       @enrich-limit="onEnrichLimit"
       @delete-all="onDeleteAll"
       @download="onDownload"
+      @download-enriched="onDownloadEnriched"
     />
 
     <PanelPostsTable
@@ -177,15 +178,17 @@ const onDeleteAll = async () => {
 const onDownload = async () => {
   try {
     const res = await povKvalService.getExport()
-    const posts = res?.data?.posts ?? []
-    const text = JSON.stringify(posts, null, 2)
-    const blob = new Blob([text], { type: 'application/json;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'povyshenie-kvalifikatsii.json'
-    link.click()
-    URL.revokeObjectURL(url)
+    downloadJson('povyshenie-kvalifikatsii.json', res?.data?.posts ?? [])
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const onDownloadEnriched = async () => {
+  try {
+    const res = await povKvalService.getExport()
+    const posts = (res?.data?.posts ?? []).filter(isEnrichedPost)
+    downloadJson('povyshenie-kvalifikatsii-enriched.json', posts)
   } catch (error) {
     console.error(error)
   }
