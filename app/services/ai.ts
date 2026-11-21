@@ -70,6 +70,33 @@ class AiService {
     })
   }
 
+  /** Один пост рабочих специальностей — POST /rab-spec/enrich */
+  async enrichRabSpecOne(id, data) {
+    return $fetch(`${this.#apiBase()}/rab-spec/enrich`, {
+      method: 'POST',
+      credentials: 'include',
+      body: { id, data },
+    })
+  }
+
+  /** Один пост профпереподготовки — POST /prof-pere/enrich */
+  async enrichProfPereOne(id, data) {
+    return $fetch(`${this.#apiBase()}/prof-pere/enrich`, {
+      method: 'POST',
+      credentials: 'include',
+      body: { id, data },
+    })
+  }
+
+  /** Один пост повышения квалификации — POST /pov-kval/enrich */
+  async enrichPovKvalOne(id, data) {
+    return $fetch(`${this.#apiBase()}/pov-kval/enrich`, {
+      method: 'POST',
+      credentials: 'include',
+      body: { id, data },
+    })
+  }
+
   /** Статус обогащения — GET /rab-spec/status */
   async getEnrichStatus() {
     return $fetch<{

@@ -224,39 +224,30 @@ const onParseMissing = async () => {
   }
 }
 
-const onEnrich = async () => {
+const runClientEnrich = async (limit) => {
   if (enriching.value || parsing.value) return
 
-  try {
-    const res = await aiService.enrichRabSpecAll()
-    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
+  stopEnrichPolling()
+  enrichStatus.value = 'loading'
 
-    if (enrichStatus.value === 'loading') {
-      startEnrichPolling()
-    }
+  try {
+    const res = await rabSpecService.getExport()
+    await enrichPendingPosts({
+      posts: res?.data?.posts ?? [],
+      limit,
+      enrich: (id, data) => aiService.enrichRabSpecOne(id, data),
+    })
+    enrichStatus.value = 'everything is loaded'
+    await refreshPosts()
   } catch (error) {
     console.error(error)
     enrichStatus.value = 'error loading'
-    stopEnrichPolling()
   }
 }
 
-const onEnrichLimit = async (count) => {
-  if (enriching.value || parsing.value) return
+const onEnrich = () => runClientEnrich(null)
 
-  try {
-    const res = await aiService.enrichRabSpecCount(count)
-    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
-
-    if (enrichStatus.value === 'loading') {
-      startEnrichPolling()
-    }
-  } catch (error) {
-    console.error(error)
-    enrichStatus.value = 'error loading'
-    stopEnrichPolling()
-  }
-}
+const onEnrichLimit = (count) => runClientEnrich(count)
 
 onMounted(async () => {
   await checkParseStatus()
