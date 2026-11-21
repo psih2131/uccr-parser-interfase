@@ -41,6 +41,14 @@
           {{ enriching ? 'Обогащение…' : 'Обогатить нейросетью' }}
         </button>
         <button
+          type="button"
+          class="panel-actions__btn panel-actions__btn--secondary"
+          :disabled="enriching"
+          @click="emit('enrich-missing')"
+        >
+          {{ enriching ? 'Обогащение…' : 'Обогатить недостающие' }}
+        </button>
+        <button
           v-if="enrichLimit"
           type="button"
           class="panel-actions__btn panel-actions__btn--enrich"
@@ -116,7 +124,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'enrich-limit', 'delete-all', 'download', 'download-enriched'])
+const emit = defineEmits(['parse', 'parse-missing', 'enrich', 'enrich-missing', 'enrich-limit', 'delete-all', 'download', 'download-enriched'])
 
 const statusMap = {
   loading: { key: 'loading', label: 'В работе' },

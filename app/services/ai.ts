@@ -70,30 +70,36 @@ class AiService {
     })
   }
 
-  /** Один пост рабочих специальностей — POST /rab-spec/enrich */
-  async enrichRabSpecOne(id, data) {
-    return $fetch(`${this.#apiBase()}/rab-spec/enrich`, {
+  /** Обогатить только ещё не обогащённые — POST /rab-spec/enrich-missing */
+  async enrichRabSpecMissing() {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/rab-spec/enrich-missing`, {
       method: 'POST',
       credentials: 'include',
-      body: { id, data },
     })
   }
 
-  /** Один пост профпереподготовки — POST /prof-pere/enrich */
-  async enrichProfPereOne(id, data) {
-    return $fetch(`${this.#apiBase()}/prof-pere/enrich`, {
+  /** Обогатить только ещё не обогащённые посты профпереподготовки — POST /prof-pere/enrich-missing */
+  async enrichProfPereMissing() {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/prof-pere/enrich-missing`, {
       method: 'POST',
       credentials: 'include',
-      body: { id, data },
     })
   }
 
-  /** Один пост повышения квалификации — POST /pov-kval/enrich */
-  async enrichPovKvalOne(id, data) {
-    return $fetch(`${this.#apiBase()}/pov-kval/enrich`, {
+  /** Обогатить только ещё не обогащённые посты повышения квалификации — POST /pov-kval/enrich-missing */
+  async enrichPovKvalMissing() {
+    return $fetch<{
+      success: boolean
+      data?: { statusLoad?: string | null }
+    }>(`${this.#apiBase()}/pov-kval/enrich-missing`, {
       method: 'POST',
       credentials: 'include',
-      body: { id, data },
     })
   }
 

@@ -18,6 +18,7 @@
       @parse="onParse"
       @parse-missing="onParseMissing"
       @enrich="onEnrich"
+      @enrich-missing="onEnrichMissing"
       @enrich-limit="onEnrichLimit"
       @delete-all="onDeleteAll"
       @download="onDownload"
@@ -224,30 +225,56 @@ const onParseMissing = async () => {
   }
 }
 
-const runClientEnrich = async (limit) => {
+const onEnrich = async () => {
   if (enriching.value || parsing.value) return
 
-  stopEnrichPolling()
-  enrichStatus.value = 'loading'
-
   try {
-    const res = await povKvalService.getExport()
-    await enrichPendingPosts({
-      posts: res?.data?.posts ?? [],
-      limit,
-      enrich: (id, data) => aiService.enrichPovKvalOne(id, data),
-    })
-    enrichStatus.value = 'everything is loaded'
-    await refreshPosts()
+    const res = await aiService.enrichPovKvalAll()
+    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
+
+    if (enrichStatus.value === 'loading') {
+      startEnrichPolling()
+    }
   } catch (error) {
     console.error(error)
     enrichStatus.value = 'error loading'
+    stopEnrichPolling()
   }
 }
 
-const onEnrich = () => runClientEnrich(null)
+const onEnrichMissing = async () => {
+  if (enriching.value || parsing.value) return
 
-const onEnrichLimit = (count) => runClientEnrich(count)
+  try {
+    const res = await aiService.enrichPovKvalMissing()
+    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
+
+    if (enrichStatus.value === 'loading') {
+      startEnrichPolling()
+    }
+  } catch (error) {
+    console.error(error)
+    enrichStatus.value = 'error loading'
+    stopEnrichPolling()
+  }
+}
+
+const onEnrichLimit = async (count) => {
+  if (enriching.value || parsing.value) return
+
+  try {
+    const res = await aiService.enrichPovKvalCount(count)
+    enrichStatus.value = res?.data?.statusLoad ?? 'loading'
+
+    if (enrichStatus.value === 'loading') {
+      startEnrichPolling()
+    }
+  } catch (error) {
+    console.error(error)
+    enrichStatus.value = 'error loading'
+    stopEnrichPolling()
+  }
+}
 
 onMounted(async () => {
   await checkParseStatus()
